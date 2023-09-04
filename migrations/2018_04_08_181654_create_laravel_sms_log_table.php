@@ -13,12 +13,12 @@ class CreateLaravelSmsLogTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('laravel_sms_log')) {
+        if (!Schema::hasTable('sms_logs')) {
 
-            Schema::create('laravel_sms_log', function (Blueprint $table) {
+            Schema::create('sms_logs', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('mobile');
-                $table->string('data');
+                $table->text('data')->nullable();
                 $table->tinyInteger('is_sent')->default(0);
                 $table->text('result')->nullable();
                 $table->timestamps();
@@ -33,6 +33,6 @@ class CreateLaravelSmsLogTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('laravel_sms_log');
+        Schema::dropIfExists('sms_logs');
     }
 }

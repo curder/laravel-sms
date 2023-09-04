@@ -235,7 +235,7 @@ if (!Sms::checkCode(\request('mobile'), \request('code'))) {
 
 ### database log
 
-目前已经支持把发送记录保存到数据库，执行 `php artisan migrate` 生成  `laravel_sms_log` 表。
+目前已经支持把发送记录保存到数据库，执行 `php artisan migrate` 生成 `sms_logs` 表。
 
 同时在 `config/ibrand/sms.php` 把 `dblog` 设置为 `true`
 

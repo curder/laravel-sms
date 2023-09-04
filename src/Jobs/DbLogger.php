@@ -45,7 +45,7 @@ class DbLogger implements ShouldQueue
         if (!config('ibrand.sms.dblog')) {
             return;
         }
-        DB::table('laravel_sms_log')->insert([
+        DB::table('sms_logs')->insert([
             'mobile' => $this->code->to,
             'data' => json_encode($this->code),
             'is_sent' => $this->flag,

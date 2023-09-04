@@ -117,7 +117,7 @@ trait SmsTestTrait
 		$this->assertTrue($result);
 
 		//check database
-		$result = DB::table('laravel_sms_log')->where('mobile', '18988888888')->first();
+		$result = DB::table('sms_logs')->where('mobile', '18988888888')->first();
 		$this->assertNotNull($result);
 		$this->assertEquals('18988888888', $result->mobile);
 		$this->assertEquals(1, $result->is_sent);
