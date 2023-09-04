@@ -47,6 +47,12 @@ iBrand\Sms\ServiceProvider::class
 'Sms'=> iBrand\Sms\Facade::class
 ```
 
+## 发布
+
+```bash
+php artisan vendor:publish --provider='iBrand\Sms\ServiceProvider'
+```
+
 ## 使用
 
 ### 发送验证码
