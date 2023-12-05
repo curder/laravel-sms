@@ -15,7 +15,7 @@
 	],
 	"require": {
 		"php": "^8.1",
-		"overtrue/easy-sms": "~1.0",
+		"overtrue/easy-sms": "~2.5",
 		"doctrine/dbal": "^2.5"
 	},
 	"require-dev": {
