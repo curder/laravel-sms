@@ -11,24 +11,27 @@
 
 namespace iBrand\Sms\Test;
 
-class SmsControllerTest extends \Orchestra\Testbench\TestCase
+use Illuminate\Foundation\Application;
+use Orchestra\Testbench\TestCase;
+
+class SmsControllerTest extends TestCase
 {
     /**
-     * @param \Illuminate\Foundation\Application $app
+     * @param Application $app
      *
      * @return array
      */
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return ['iBrand\Sms\ServiceProvider'];
     }
 
     /**
-     * @param \Illuminate\Foundation\Application $app
+     * @param Application $app
      *
      * @return array
      */
-    protected function getPackageAliases($app)
+    protected function getPackageAliases($app): array
     {
         return [
             'Sms' => "iBrand\Sms\Facade",

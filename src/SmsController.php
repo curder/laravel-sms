@@ -11,6 +11,7 @@
 
 namespace iBrand\Sms;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use iBrand\Sms\Facade as Sms;
 
@@ -21,9 +22,9 @@ use iBrand\Sms\Facade as Sms;
 class SmsController extends Controller
 {
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function postSendCode()
+    public function postSendCode(): JsonResponse
     {
         $mobile = request('mobile');
 
@@ -45,7 +46,7 @@ class SmsController extends Controller
     /**
      * laravel sms code info.
      */
-    public function info()
+    public function info(): void
     {
         $html = '<meta charset="UTF-8"/><h2 align="center" style="margin-top: 30px;margin-bottom: 0;">iBrand Laravel Sms</h2>';
         $html .= '<p style="margin-bottom: 30px;font-size: 13px;color: #888;" align="center">' . 1.0 . '</p>';

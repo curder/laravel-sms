@@ -15,7 +15,7 @@ use iBrand\Sms\Storage\SessionStorage;
 
 class SessionSmsTest extends SmsTest
 {
-    protected function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp($app): void
     {
         parent::getEnvironmentSetUp($app);
         $app['config']->set('ibrand.sms.storage', SessionStorage::class);

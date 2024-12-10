@@ -22,8 +22,8 @@ use Sms;
 
 trait SmsTestTrait
 {
-	public function testStorage()
-	{
+	public function testStorage(): void
+    {
 		Sms::setStorage(new CacheStorage());
 
 		$storage = Sms::getStorage();

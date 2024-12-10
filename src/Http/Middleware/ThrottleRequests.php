@@ -4,6 +4,7 @@ namespace iBrand\Sms\Http\Middleware;
 
 use Closure;
 use Illuminate\Cache\RateLimiter;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ThrottleRequests
@@ -11,14 +12,14 @@ class ThrottleRequests
 	/**
 	 * The rate limiter instance.
 	 *
-	 * @var \Illuminate\Cache\RateLimiter
+	 * @var RateLimiter
 	 */
 	protected $limiter;
 
 	/**
 	 * Create a new request throttler.
 	 *
-	 * @param \Illuminate\Cache\RateLimiter $limiter
+	 * @param RateLimiter $limiter
 	 */
 	public function __construct(RateLimiter $limiter)
 	{
@@ -28,18 +29,18 @@ class ThrottleRequests
 	/**
 	 * Handle an incoming request.
 	 *
-	 * @param \Illuminate\Http\Request $request
-	 * @param \Closure                 $next
+	 * @param Request $request
+	 * @param Closure $next
 	 * @param int                      $maxAttempts
 	 * @param int                      $decaySeconds
 	 *
 	 * @return mixed
 	 */
-	public function handle($request, Closure $next, $maxAttempts = 60, $decaySeconds = 1)
+	public function handle($request, Closure $next, int $maxAttempts = 60, int $decaySeconds = 1)
 	{
 		$key = $this->resolveRequestSignature($request);
 
-		if ($this->limiter->tooManyAttempts($key, $maxAttempts, $decaySeconds)) {
+		if ($this->limiter->tooManyAttempts($key, $maxAttempts)) {
 			return $this->buildResponse($key, $maxAttempts);
 		}
 
@@ -56,12 +57,12 @@ class ThrottleRequests
 	/**
 	 * Resolve request signature.
 	 *
-	 * @param \Illuminate\Http\Request $request
+	 * @param Request $request
 	 *
 	 * @return string
 	 */
-	protected function resolveRequestSignature($request)
-	{
+	protected function resolveRequestSignature(Request $request): string
+    {
 		return $request->fingerprint();
 	}
 
@@ -71,10 +72,10 @@ class ThrottleRequests
 	 * @param $key
 	 * @param $maxAttempts
 	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
-	protected function buildResponse($key, $maxAttempts)
-	{
+	protected function buildResponse($key, $maxAttempts): Response
+    {
 		$message = json_encode([
 			'message'     => 'Too many attempts, please slow down the request.',
 			'status_code' => 429,
@@ -94,15 +95,15 @@ class ThrottleRequests
 	/**
 	 * Add the limit header information to the given response.
 	 *
-	 * @param \Symfony\Component\HttpFoundation\Response $response
+	 * @param Response $response
 	 * @param                                            $maxAttempts
 	 * @param                                            $remainingAttempts
 	 * @param null                                       $retryAfter
 	 *
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return Response
 	 */
-	protected function addHeaders(Response $response, $maxAttempts, $remainingAttempts, $retryAfter = null)
-	{
+	protected function addHeaders(Response $response, $maxAttempts, $remainingAttempts, $retryAfter = null): Response
+    {
 		$headers = [
 			'X-RateLimit-Limit'     => $maxAttempts,
 			'X-RateLimit-Remaining' => $remainingAttempts,
@@ -121,14 +122,14 @@ class ThrottleRequests
 	/**
 	 * Calculate the number of remaining attempts.
 	 *
-	 * @param string   $key
-	 * @param int      $maxAttempts
+	 * @param string $key
+	 * @param int $maxAttempts
 	 * @param int|null $retryAfter
 	 *
 	 * @return int
 	 */
-	protected function calculateRemainingAttempts($key, $maxAttempts, $retryAfter = null)
-	{
+	protected function calculateRemainingAttempts(string $key, int $maxAttempts, ?int $retryAfter = null): int
+    {
 		if (!is_null($retryAfter)) {
 			return 0;
 		}
