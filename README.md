@@ -24,27 +24,10 @@ Laravel 贴合实际需求同时满足多种通道的短信发送组件
 8. 支持短信验证码发送记录保存到数据库
 9. 短信发送频率限制，同一 IP 限定时间内请求次数
 
-## TODO：
-
-1. 支持语音验证码
-
 ## 安装
 
 ```php
-composer require ibrand/laravel-sms:~1.0 -vvv
-```
-
-低于 Laravel5.5 版本
-
-`config/app.php` 文件中 'providers' 添加
-```php
-iBrand\Sms\ServiceProvider::class
-```
-
-`config/app.php` 文件中 'aliases' 添加
-
-```php
-'Sms'=> iBrand\Sms\Facade::class
+composer require curder/laravel-sms -vvv
 ```
 
 ## 发布
@@ -88,7 +71,7 @@ POST请求 `http://your.domain/sms/verify-code`
 }
 ```
 
-2. 如果需要自定义路由，也可以通过使用Facade发送验证码：
+如果需要自定义路由，也可以通过使用 Facade 发送验证码：
 
 ```php
 use iBrand\Sms\Facade as Sms;
@@ -223,7 +206,7 @@ if (!Sms::checkCode(\request('mobile'), \request('code'))) {
 
 ### 配置 Content
 
-非模板类通道，可以通过 config/ibrand/sms.php 自定义短信内容
+非模板类通道，可以通过 `config/ibrand/sms.php` 自定义短信内容
 
 `'content' => '【your signature】亲爱的用户，您的验证码是%s。有效期为%s分钟，请尽快验证。'`
 

@@ -1,0 +1,56 @@
+# GithHub Actions Workflow generated with Ghygen
+# Original configuration: https://ghygen.hi-folks.dev?code=775b8b91ba08e1bb06a0c876d58aaed9
+name: Laravel SMS - PHP Package
+on:
+  push:
+    branches:
+      - master
+      - features/**
+
+jobs:
+  laravel-tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-versions: [ '8.3','8.2','8.1' ]
+        dependency-stability: [ 'prefer-stable' ]
+        laravel: [ '11.*' ]
+        include:
+          - laravel: 11.*
+            testbench: 9.*
+
+    name: P${{ matrix.php-versions }} - L${{ matrix.laravel }} - ${{ matrix.dependency-stability }} - ${{ matrix.operating-system}}
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install PHP versions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+      - name: Install Laravel Dependencies
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+          composer update --${{ matrix.dependency-stability }} --prefer-dist --no-interaction --no-suggest
+
+      - name: Update Dependencies with latest stable
+        if: matrix.dependency-stability == 'prefer-stable'
+        run: composer update --prefer-stable
+      - name: Update Dependencies with lowest stable
+        if: matrix.dependency-stability == 'prefer-lowest'
+        run: composer update --prefer-stable --prefer-lowest
+
+
+      - name: Show dir
+        run: pwd
+      - name: PHP Version
+        run: php --version
+
+      # Code quality
+      - name: Execute tests (Unit and Feature tests) via PHPUnit
+        # Set environment
+        env:
+          SESSION_DRIVER: array
+
+        run: vendor/bin/phpunit
